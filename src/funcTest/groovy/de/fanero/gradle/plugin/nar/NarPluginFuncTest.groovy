@@ -1,10 +1,10 @@
 package de.fanero.gradle.plugin.nar
 
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 
+import java.nio.file.Path
 import java.util.jar.Manifest
 import java.util.regex.Pattern
 import java.util.zip.ZipEntry
@@ -18,17 +18,17 @@ class NarPluginFuncTest extends Specification {
     private static final TEST_BASE_NAME = 'nar-test'
     private static final TEST_VERSION = '1.0'
 
-    @Rule
-    TemporaryFolder testProjectDir = new TemporaryFolder()
+    @TempDir
+    Path testProjectDir
 
     File buildFile
     File settingsFile
 
     def setup() {
-        buildFile = testProjectDir.newFile('build.gradle')
+        buildFile = testProjectDir.resolve('build.gradle').toFile()
         buildFile << """
 plugins {
-    id 'de.fanero.gradle.plugin.nar'
+    id 'io.github.lhotari.gradle-nar-plugin'
 }
 nar {
     baseName '${TEST_BASE_NAME}'
@@ -36,7 +36,7 @@ nar {
 group = 'de.fanero.test'
 version = '${TEST_VERSION}'
 """
-        settingsFile = testProjectDir.newFile('settings.gradle')
+        settingsFile = testProjectDir.resolve('settings.gradle').toFile()
         settingsFile << """
 rootProject.name = "nar-test"
 """
@@ -46,7 +46,7 @@ rootProject.name = "nar-test"
 
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -73,7 +73,7 @@ dependencies {
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -103,7 +103,7 @@ dependencies {
 """
         expect:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .buildAndFail()
@@ -116,12 +116,12 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile group: 'commons-io', name: 'commons-io', version: '2.2'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 }
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -148,7 +148,7 @@ nar {
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -172,7 +172,7 @@ nar {
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -189,7 +189,7 @@ nar {
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -206,7 +206,7 @@ nar {
 """
         when:
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments('nar')
                 .withPluginClasspath()
                 .build()
@@ -262,6 +262,6 @@ nar {
     }
 
     private File narFile() {
-        new File(testProjectDir.root, "build/libs/${TEST_BASE_NAME}-${TEST_VERSION}.nar")
+        new File(testProjectDir.toFile(), "build/libs/${TEST_BASE_NAME}-${TEST_VERSION}.nar")
     }
 }

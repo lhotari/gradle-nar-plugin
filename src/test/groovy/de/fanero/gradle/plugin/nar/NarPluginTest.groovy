@@ -12,7 +12,7 @@ import spock.lang.Specification
  */
 class NarPluginTest extends Specification {
 
-    public static final String PLUGIN = 'de.fanero.gradle.plugin.nar'
+    public static final String PLUGIN = 'io.github.lhotari.gradle-nar-plugin'
     public static final String NAR_TASK = 'nar'
 
     private Project project
