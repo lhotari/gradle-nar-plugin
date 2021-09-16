@@ -1,24 +1,14 @@
 # gradle-nar-plugin
 
 A gradle plugin to create nar files for [Apache nifi](http://nifi.apache.org).
+This plugin is forked from https://github.com/sponiro/gradle-nar-plugin . Kudos to the [originals contributors](https://github.com/sponiro/gradle-nar-plugin/graphs/contributors).
 
 ## Installation
-To use the plugin, add the bintray repository to your script and add the plugin dependency:
 
 ```groovy
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'http://dl.bintray.com/sponiro/gradle-plugins'
-        }
-    }
-    dependencies {
-        classpath group: 'de.fanero.gradle.plugin.nar', name: 'gradle-nar-plugin', version: '0.4'
-    }
+plugins {
+    id 'io.github.lhotari.gradle-nar-plugin' version '0.5.0'
 }
-
-apply plugin: 'de.fanero.gradle.plugin.nar'
 ```
 ## Usage
 
@@ -26,8 +16,6 @@ Run `gradle nar` to execute the nar task and create a nar archive.
 
 ## Configuration
 
-This plugin depends on the JavaPlugin.
-If it does not exist it will add it to the build.
 
 ### Nar Task
 The plugin adds a new preconfigured task of type Nar named `nar` to the project.
@@ -81,27 +69,9 @@ nar {
 
 A full description can be found at https://docs.gradle.org/current/userguide/java_plugin.html#sec:jar.
 
-## Shortcomings
-
-Version 0.1 and 0.2 do not add the parent nar in the nar configuration to the dependencies.
-To fix this you can either use version 0.3 or add the following code to your build:
-
-```groovy
-configurations {
-    compileOnly.extendsFrom(configurations.nar)
-}
-```
-
-
 ### Service Locator
 
 Apache nifi uses the [ServiceLocator](http://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) to define processors. The [Processor API](https://nifi.apache.org/docs/nifi-docs/html/developer-guide.html#processor_api)
 explains in detail how this works. Basically, you have to add a file in `META-INF/services` directory named
 `org.apache.nifi.processor.Processor`. This text file contains a fully-qualified class names of your processors.
 One per line.
-
-# Contributions
-
-## Version 0.4
-
-Thanks to [Lars Winderling](https://github.com/kaHaleMaKai) for making the plugin ready for Gradle 6.
