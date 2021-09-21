@@ -6,7 +6,7 @@ plugins {
     id 'idea'
 }
 
-group = 'de.fanero.gradle.plugin.nar'
+group = 'io.github.lhotari.gradle-nar-plugin'
 
 sourceCompatibility = 1.8
 
