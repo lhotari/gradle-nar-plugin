@@ -61,6 +61,40 @@ rootProject.name = "nar-test"
         manifest.getMainAttributes().getValue('Nar-Dependency-Id') == null
     }
 
+    def "should include pulsar-io.yaml"() {
+        when:
+        def pulsarIoYamlFile = testProjectDir.resolve('src/main/resources/META-INF/services/pulsar-io.yaml').toFile()
+        pulsarIoYamlFile.parentFile.mkdirs()
+        def pulsarIoYamlContent = '''
+name: connector name
+description: connector description
+sourceClass: fully qualified class name (only if source connector)
+sinkClass: fully qualified class name (only if sink connector)
+'''
+        pulsarIoYamlFile.text = pulsarIoYamlContent
+
+        GradleRunner.create()
+                .withProjectDir(testProjectDir.toFile())
+                .withArguments('nar')
+                .withPluginClasspath()
+                .build()
+
+        def pulsarIoYamlContentPackaged
+        eachZipEntry { ZipInputStream zip, ZipEntry entry ->
+            println entry.name
+            if (entry.name == 'META-INF/services/pulsar-io.yaml') {
+                pulsarIoYamlContentPackaged = zip.text
+                return false
+            } else {
+                return true
+            }
+        }
+
+        then:
+        pulsarIoYamlContentPackaged != null
+        pulsarIoYamlContentPackaged == pulsarIoYamlContent
+    }
+
     def "test parent nar entry"() {
 
         buildFile << """

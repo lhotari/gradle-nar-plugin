@@ -4,6 +4,7 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.java.archives.Attributes
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.bundling.Jar
 
@@ -30,6 +31,10 @@ class Nar extends Jar {
         configure {
             into('META-INF/bundled-dependencies') {
                 from({ -> bundledDependencies })
+            }
+            from(project.zipTree(project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar)
+                    .get().getArchiveFile())) {
+                include('META-INF/services/**')
             }
         }
     }
