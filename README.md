@@ -10,6 +10,8 @@ plugins {
     id 'io.github.lhotari.gradle-nar-plugin' version '0.5.1'
 }
 ```
+Check the [Gradle plugins portal page for more details](https://plugins.gradle.org/plugin/io.github.lhotari.gradle-nar-plugin).
+
 ## Usage
 
 Run `gradle nar` to execute the nar task and create a nar archive.
