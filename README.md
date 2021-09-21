@@ -7,7 +7,7 @@ This plugin is forked from https://github.com/sponiro/gradle-nar-plugin . Kudos 
 
 ```groovy
 plugins {
-    id 'io.github.lhotari.gradle-nar-plugin' version '0.5.0'
+    id 'io.github.lhotari.gradle-nar-plugin' version '0.5.1'
 }
 ```
 ## Usage
